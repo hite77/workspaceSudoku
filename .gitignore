@@ -1,0 +1,10 @@
+.classpath
+.project
+bin/
+gen/
+ic_launcher-web.png
+libs/
+proguard-project.txt
+project.properties
+res/
+.settings
