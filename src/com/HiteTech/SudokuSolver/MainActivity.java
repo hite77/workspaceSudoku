@@ -2,6 +2,7 @@ package com.HiteTech.SudokuSolver;
 
 import com.example.myfirstapp.R;
 
+import Sudoku.board;
 import Sudoku.cell;
 import android.os.Bundle;
 import android.app.Activity;
@@ -27,5 +28,7 @@ public class MainActivity extends Activity {
     	// first commit......
     	cell Cell = new cell();
     	Cell.getSolution();
+//    	board Board = new board();
+    	
     }
 }
