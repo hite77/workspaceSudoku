@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainRelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -9,7 +10,7 @@
     tools:context=".MainActivity" >
 
     <View
-        android:id="@+id/view1"
+        android:id="@+id/viewAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
@@ -20,7 +21,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/view1"
+        android:layout_alignRight="@+id/viewAll"
         android:orientation="vertical" >
 
         <com.HiteTech.SudokuSolver.DrawView
@@ -35,32 +36,44 @@
             android:layout_weight="0.01" >
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/oneButton"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:onClick="oneClicked"
+                android:text="1" />
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/twoButton"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:onClick="twoClicked"
+                android:text="2" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/threeButton"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="3" 
+                android:onClick="threeClicked"/>
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/pencilHint"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Pencil Hint" 
+                android:onClick="pencilHintClicked"/>
+
+            <Button
+                android:id="@+id/editAndPencil"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="editPencilClicked"
+                android:text="Pencil" />
 
         </LinearLayout>
 		<LinearLayout
@@ -69,32 +82,42 @@
             android:layout_weight="0.01" >
 
 			<Button
-			    android:id="@+id/button3"
+			    android:id="@+id/fourButton"
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Button" />
+			    android:text="4" 
+			    android:onClick="fourClicked"/>
 
 			<Button
-			    android:id="@+id/button6"
+			    android:id="@+id/fiveButton"
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Button" />
+			    android:text="5" 
+			    android:onClick="fiveClicked"/>
 
 			<Button
-			    android:id="@+id/button7"
+			    android:id="@+id/sixButton"
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Button" />
+			    android:text="6" 
+			    android:onClick="sixClicked"/>
 
 			<Button
-			    android:id="@+id/button8"
+			    android:id="@+id/left"
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Button" />
+			    android:text="Left" />
+
+			<Button
+			    android:id="@+id/right"
+			    style="?android:attr/buttonStyleSmall"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Right" />
 
         </LinearLayout>
 		<LinearLayout
@@ -103,32 +126,42 @@
             android:layout_weight="0.01" >
 
 			<Button
-			    android:id="@+id/button9"
+			    android:id="@+id/sevenButton"
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Button" />
+			    android:text="7" 
+			    android:onClick="sevenClicked"/>
 
 			<Button
-			    android:id="@+id/button10"
+			    android:id="@+id/eightButton"
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Button" />
+			    android:text="8" 
+			    android:onClick="eightClicked"/>
 
 			<Button
-			    android:id="@+id/button11"
+			    android:id="@+id/nineButton"
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Button" />
+			    android:text="9" 
+			    android:onClick="nineClicked"/>
 
 			<Button
-			    android:id="@+id/button12"
+			    android:id="@+id/solve"
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Button" />
+			    android:text="Solve" />
+
+			<Button
+			    android:id="@+id/generate"
+			    style="?android:attr/buttonStyleSmall"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Generate" />
 
 		</LinearLayout>
 		

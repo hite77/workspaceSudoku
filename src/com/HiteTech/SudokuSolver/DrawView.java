@@ -7,13 +7,23 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
 public class DrawView extends View implements OnTouchListener {
+	
+	
+	private board Board;
+	private boolean initialized = false;
+	
+	public void SetBoard(board inputBoard)
+	{
+		initialized  = true;
+		Board = inputBoard;
+		invalidate();
+	}
 	
 	List<Point> points = new ArrayList<Point>();
 	Paint paint = new Paint();
@@ -42,6 +52,8 @@ public class DrawView extends View implements OnTouchListener {
 		paint.setColor(Color.WHITE);
 		paint.setAntiAlias(true);
 	}
+	
+    
 	
 	@Override
 	public void onDraw(Canvas canvas)
@@ -87,6 +99,14 @@ public class DrawView extends View implements OnTouchListener {
 				canvas.drawLine(start_x, start_y+cell_height, 
 						        start_x, start_y, paint); // left
 				
+				if (initialized)
+				{
+//				if (Board.get(i, j) > 0)
+//				{
+//					// should output solution for square
+//				}
+				// will need to iterate over the vector, or check for each number.....
+				
 				canvas.drawText("1", start_x+(float)2.0, start_y+(float)12.0, paint);
 				canvas.drawText("2", start_x+(cell_width/(float)2.0)-(float)2.0, 
 						             start_y+(float)12.0, paint);
@@ -113,7 +133,7 @@ public class DrawView extends View implements OnTouchListener {
 				// and store coordinates
 				// so we can tell when each is clicked on....
 				// also need to find coordinates for the big numbers for solution numbers
-				
+				}
 				
 			}
 		}
