@@ -50,6 +50,7 @@ public class cell {
 		else
 		{
 			possible.add(value);
+			solution = 0;
 		}
 	}
 
