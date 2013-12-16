@@ -14,12 +14,14 @@ public class MainActivity extends Activity {
 
     public board Board = new board();
 	private boolean editMode = true;
-
+	private DrawView Sudoku;
+	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+    	Sudoku = (DrawView) findViewById(R.id.drawView1);
+        Sudoku.SetBoard(Board);
     }
 
     @Override
@@ -29,46 +31,59 @@ public class MainActivity extends Activity {
         return true;
     }
     
+    private void HandleClick(int i) {
+    	if (Sudoku.selection_x == -1) return;
+    	if (editMode)
+    	{
+    		Board.set(i, Sudoku.selection_x, Sudoku.selection_y);
+    	}
+    	else
+    	{
+    		Board.toggle(i, Sudoku.selection_x, Sudoku.selection_y);
+    	}
+    	Sudoku.invalidate();
+  }
+    
     public void oneClicked(View view) {
-    	MessageBox("One Was Clicked");
-    	DrawView sudoku = (DrawView) findViewById(R.id.drawView1);
-        sudoku.SetBoard(Board);
+    	HandleClick(1);
     }
     
-    public void twoClicked(View view) {
-    	MessageBox("Two Was Clicked");
+	public void twoClicked(View view) {
+		HandleClick(2);
     }
     
     public void threeClicked(View view) {
-    	MessageBox("Three Was Clicked");
+    	HandleClick(3);
     }
     
     public void fourClicked(View view) {
-    	MessageBox("Four Was Clicked");
+    	HandleClick(4);
     }
     
     public void fiveClicked(View view) {
-    	MessageBox("Five Was Clicked");
+    	HandleClick(5);
     }
     
     public void sixClicked(View view) {
-    	MessageBox("Six Was Clicked");
+    	HandleClick(6);
     }
     
     public void sevenClicked(View view) {
-    	MessageBox("Seven Was Clicked");
+    	HandleClick(7);
     }
     
     public void eightClicked(View view) {
-    	MessageBox("Eight Was Clicked");
+    	HandleClick(8);
     }
     
     public void nineClicked(View view) {
-    	MessageBox("Nine Was Clicked");
+    	HandleClick(9);
     }
     
     public void pencilHintClicked(View view) {
     	MessageBox("pencilHint Was Clicked");
+    	Board.calculateHints();
+    	Sudoku.invalidate();
     }
     
     public void MessageBox(String message)

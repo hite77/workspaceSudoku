@@ -2,6 +2,7 @@ package com.HiteTech.SudokuSolver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,6 +15,7 @@ import android.view.View.OnTouchListener;
 
 public class DrawView extends View implements OnTouchListener {
 	
+	public int selection_x = -1; int selection_y = -1;
 	
 	private board Board;
 	private boolean initialized = false;
@@ -90,6 +92,28 @@ public class DrawView extends View implements OnTouchListener {
 				start_x = (float)i * cell_width;
 				start_y = (float)j * cell_height;
 				
+				// points... first entry... if it exists fill with blue....
+				if (points.size() == 1)
+				{
+					float x = points.get(0).x;
+					float y = points.get(0).y;
+					
+					if ((x > start_x) && (x < start_x+cell_width))
+						if ((y > start_y) && (y < start_y+cell_height))
+						{
+							// set selection
+							selection_x = i; selection_y = j;
+							
+							// set color and fill
+							paint.setColor(Color.CYAN);
+							canvas.drawRect(start_x, start_y, start_x+cell_width, 
+									start_y+cell_height, paint);
+							// set color back
+							paint.setColor(Color.BLACK);
+						}
+				}
+				
+				
 				canvas.drawLine(start_x, start_y, 
 						        start_x+cell_width, start_y, paint); // top
 				canvas.drawLine(start_x+cell_width, start_y, 
@@ -101,34 +125,82 @@ public class DrawView extends View implements OnTouchListener {
 				
 				if (initialized)
 				{
-//				if (Board.get(i, j) > 0)
-//				{
-//					// should output solution for square
-//				}
+				if (Board.get(i, j) > 0)
+				{
+					// should output solution for square
+					float original = paint.getTextSize();
+					
+					paint.setTextSize((float) (original*1.8));
+					canvas.drawText(Integer.toString(Board.get(i,j)), start_x+(cell_width/(float)2.0)-(float)2.0,
+				             start_y+(cell_height/(float)2.0)+(float)(4.0), paint);
+					paint.setTextSize(original);
+				}
+				
+				
 				// will need to iterate over the vector, or check for each number.....
+				Vector <Integer> possible = Board.getPossible(i, j);
 				
-				canvas.drawText("1", start_x+(float)2.0, start_y+(float)12.0, paint);
-				canvas.drawText("2", start_x+(cell_width/(float)2.0)-(float)2.0, 
-						             start_y+(float)12.0, paint);
-				canvas.drawText("3", start_x+cell_width-(float)8.0, 
-						             start_y+(float)12.0, paint);
+				if (possible.contains(1))
+				{
+					canvas.drawText("1", start_x+(float)2.0, start_y+(float)12.0, paint);
+				}
 				
-				canvas.drawText("4", start_x+(float)2.0, 
-						             start_y+(cell_height/(float)2.0)+(float)(4.0), paint);
-				canvas.drawText("5", start_x+(cell_width/(float)2.0)-(float)2.0,
-						             start_y+(cell_height/(float)2.0)+(float)(4.0), paint);
-				canvas.drawText("6", start_x+cell_width-(float)8.0,
-			                         start_y+(cell_height/(float)2.0)+(float)(4.0), paint);
+				if (possible.contains(2))
+				{
+					canvas.drawText("2", start_x+(cell_width/(float)2.0)-(float)2.0, 
+				             start_y+(float)12.0, paint);
+				
+				}
+				
+				if (possible.contains(3))
+				{
+					canvas.drawText("3", start_x+cell_width-(float)8.0, 
+				             start_y+(float)12.0, paint);
+					
+				}
+				
+				if (possible.contains(4))
+				{
+					canvas.drawText("4", start_x+(float)2.0, 
+				             start_y+(cell_height/(float)2.0)+(float)(4.0), paint);
+					
+				}
+				
+				if (possible.contains(5))
+				{
+					canvas.drawText("5", start_x+(cell_width/(float)2.0)-(float)2.0,
+				             start_y+(cell_height/(float)2.0)+(float)(4.0), paint);
+					
+				}
+				
+				if (possible.contains(6))
+				{
+					canvas.drawText("6", start_x+cell_width-(float)8.0,
+	                         start_y+(cell_height/(float)2.0)+(float)(4.0), paint);
+					
+				}
+				
+				if (possible.contains(7))
+				{
+					canvas.drawText("7", start_x+(float)2.0, 
+				             start_y+cell_height-(float)2.0, paint);
+					
+				}
+				
+				if (possible.contains(8))
+				{
+					canvas.drawText("8", start_x+(cell_width/(float)2.0)-(float)2.0, 
+	                         start_y+cell_height-(float)2.0, paint);
+					
+				}
+				
+				if (possible.contains(9))
+				{
+					canvas.drawText("9", start_x+cell_width-(float)8.0, 
+	                         start_y+cell_height-(float)2.0, paint);
+					
+				}				
 	
-				
-				canvas.drawText("7", start_x+(float)2.0, 
-						             start_y+cell_height-(float)2.0, paint);
-				canvas.drawText("8", start_x+(cell_width/(float)2.0)-(float)2.0, 
-			                         start_y+cell_height-(float)2.0, paint);
-				canvas.drawText("9", start_x+cell_width-(float)8.0, 
-			                         start_y+cell_height-(float)2.0, paint);
-
-				
 				// need to separate draws to another class.
 				// and store coordinates
 				// so we can tell when each is clicked on....
@@ -168,6 +240,7 @@ public class DrawView extends View implements OnTouchListener {
 		Point point = new Point();
 		point.x = event.getX();
 		point.y = event.getY();
+		points.clear();
 		points.add(point);
 		invalidate();
 		return true;
