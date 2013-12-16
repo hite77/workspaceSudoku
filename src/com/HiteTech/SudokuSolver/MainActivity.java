@@ -5,6 +5,7 @@ import com.example.myfirstapp.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -12,7 +13,19 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    public board Board = new board();
+    @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+    	// Handle item selection
+        switch (item.getItemId()) {
+            case R.id.guessMenu:
+                guessClicked();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+	}
+
+	public board Board = new board();
 	private boolean editMode = true;
 	private DrawView Sudoku;
 	
@@ -103,4 +116,10 @@ public class MainActivity extends Activity {
     		button.setText("Pencil");
     	}
     }   
+    
+    public void guessClicked() {
+    	MessageBox("Guess was clicked.");
+    }
+    
+    
 }
