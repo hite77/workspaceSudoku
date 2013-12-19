@@ -33,6 +33,40 @@ public class board {
 		setQuad(6,8,6,8,8);		
 	}
 
+	public board(board getBoard) {
+		for (int i=0;i<9; i++)
+			for (int j=0;j<9;j++)
+			{
+				memory[i][j] = new cell();
+				if (getBoard.get(i, j) > 0)
+				{
+					memory[i][j].set(getBoard.get(i, j));
+				}
+				else
+				{
+					memory[i][j].setPossible(getBoard.getPossible(i, j));
+				}
+			}
+		// assign cells to cell regions....
+		for (int row=0;row<9; row++)
+			for (int col=0;col<9;col++)
+			{
+				hcells[row][col] = memory[col][row];
+		        vcells[col][row] = memory[col][row];
+			}   
+		setQuad(0,2,0,2,0);
+		setQuad(3,5,0,2,1);
+		setQuad(6,8,0,2,2);
+		setQuad(0,2,3,5,3);
+		setQuad(3,5,3,5,4);
+		setQuad(6,8,3,5,5);
+		setQuad(0,2,6,8,6);
+		setQuad(3,5,6,8,7);
+		setQuad(6,8,6,8,8);
+		// clone board....
+		
+	}
+
 	private void setQuad(int startx, int endx, int starty, int endy, int quad) {
 		int count = 0;
 		for (int col=startx; col<=endx; col++)

@@ -57,4 +57,8 @@ public class cell {
 	public Vector<Integer> getPossible() {
 		return possible;
 	}
+
+	public void setPossible(Vector<Integer> possible2) {
+		possible = possible2;	
+	}
 }
