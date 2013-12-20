@@ -41,12 +41,38 @@ public class controller {
 		}
 	}
 
+	public void Left() {
+		Position -= 1;
+		if (Position < 0) Position = 0;
+	}
+	
 	public void Right() {
 		Position += 1;
-		if (Position > Boards.size()) Position = Boards.size();
+		if (Position >= Boards.size()) Position = Boards.size()-1;
 	}
 
 	public int Position() {
-		return Boards.size()+1;
+		return Position+1;
 	}
+
+	public boolean LeftEnabled() {
+		if (Position > 0) return true;
+		return false;
+	}
+
+	public boolean RightEnabled() {
+		if (Position+1 <= Boards.size()-1) 
+	    {
+			return true; 
+	    }
+		return false;
+	}
+
+	public void Delete() {
+		if (Boards.size() > 1)
+		{
+			Boards.remove(Position);
+			if (Position >= Boards.size()) Position = Boards.size()-1;
+		}
+	}	
 }
