@@ -25,8 +25,9 @@ public class MainActivity extends Activity {
         }
 	}
 
-	public board Board = new board();
-	private boolean editMode = true;
+	private controller Controller = new controller();
+    
+    private boolean editMode = true;
 	private DrawView Sudoku;
 	
 	@Override
@@ -34,7 +35,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     	Sudoku = (DrawView) findViewById(R.id.drawView1);
-        Sudoku.SetBoard(Board);
+        Sudoku.SetBoard(Controller.GetBoard());
     }
 
     @Override
@@ -48,11 +49,11 @@ public class MainActivity extends Activity {
     	if (Sudoku.selection_x == -1) return;
     	if (editMode)
     	{
-    		Board.set(i, Sudoku.selection_x, Sudoku.selection_y);
+    		Controller.GetBoard().set(i, Sudoku.selection_x, Sudoku.selection_y);
     	}
     	else
     	{
-    		Board.toggle(i, Sudoku.selection_x, Sudoku.selection_y);
+    		Controller.GetBoard().toggle(i, Sudoku.selection_x, Sudoku.selection_y);
     	}
     	Sudoku.invalidate();
   }
@@ -95,7 +96,7 @@ public class MainActivity extends Activity {
     
     public void pencilHintClicked(View view) {
     	MessageBox("pencilHint Was Clicked");
-    	Board.calculateHints();
+    	Controller.GetBoard().calculateHints();
     	Sudoku.invalidate();
     }
     
@@ -117,9 +118,23 @@ public class MainActivity extends Activity {
     	}
     }   
     
-    public void guessClicked() {
-    	MessageBox("Guess was clicked.");
+    public void leftClicked(View view) {
+    	Controller.Left();
+    	Sudoku.SetBoard(Controller.GetBoard());
+    	Sudoku.invalidate();
     }
     
+    public void rightClicked(View view) {
+    	Controller.Right();
+    	Sudoku.SetBoard(Controller.GetBoard());
+    	Sudoku.invalidate();
+    }	    
     
+    public void guessClicked() {
+    	if (Sudoku.selection_x > -1)
+    	{
+    		Controller.Guess(Sudoku.selection_x, Sudoku.selection_y);
+    		Sudoku.invalidate();
+    	}
+    }
 }

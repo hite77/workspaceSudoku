@@ -110,14 +110,16 @@
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Left" />
+			    android:text="Left" 
+			    android:onClick="leftClicked"/>
 
 			<Button
 			    android:id="@+id/right"
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Right" />
+			    android:text="Right" 
+			    android:onClick="rightClicked"/>
 
         </LinearLayout>
 		<LinearLayout

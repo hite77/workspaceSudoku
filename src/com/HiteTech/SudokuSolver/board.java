@@ -40,11 +40,16 @@ public class board {
 				memory[i][j] = new cell();
 				if (getBoard.get(i, j) > 0)
 				{
-					memory[i][j].set(getBoard.get(i, j));
+					int val = getBoard.get(i, j);
+					memory[i][j].set(val);
 				}
 				else
 				{
-					memory[i][j].setPossible(getBoard.getPossible(i, j));
+					Vector<Integer> vals = getBoard.getPossible(i, j);
+					Vector<Integer> newvals = new Vector<Integer>();
+					for (int z=0; z<vals.size(); z++)
+						newvals.add(vals.get(z));
+					memory[i][j].setPossible(newvals);
 				}
 			}
 		// assign cells to cell regions....
