@@ -20,9 +20,18 @@ public class MainActivity extends Activity {
             case R.id.guessMenu:
                 guessClicked();
                 return true;
+            case R.id.Delete:
+            	deleteClicked();
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+	}
+
+	private void deleteClicked() {
+		Controller.Delete();
+		Sudoku.SetBoard(Controller.GetBoard());
+		Sudoku.invalidate();
 	}
 
 	private controller Controller = new controller();
