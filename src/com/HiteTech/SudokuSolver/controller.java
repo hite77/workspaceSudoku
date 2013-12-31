@@ -5,6 +5,7 @@ import java.util.Vector;
 public class controller {
 
 	private Vector<board> Boards = new Vector<board>();
+	//private board UndoBoard = new board();
 	private int Position = 0;
 	
 	public controller() {
@@ -74,5 +75,10 @@ public class controller {
 			Boards.remove(Position);
 			if (Position >= Boards.size()) Position = Boards.size()-1;
 		}
+	}
+
+	public void Undo() {
+		// TODO Auto-generated method stub
+		
 	}	
 }

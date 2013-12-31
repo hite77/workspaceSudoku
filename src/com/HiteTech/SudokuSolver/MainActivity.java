@@ -23,6 +23,8 @@ public class MainActivity extends Activity {
             case R.id.Delete:
             	deleteClicked();
             	return true;
+            case R.id.undo:
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -44,8 +46,64 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     	Sudoku = (DrawView) findViewById(R.id.drawView1);
+        Sudoku.setParentContext(findViewById(R.id.mainRelativeLayout1));
+        Sudoku.setMode(editMode);
         Sudoku.SetBoard(Controller.GetBoard());
+        Sudoku.updateButtonColors();
+    	
+    	// pull persistance and place into controller, or build a new one?
+//    	Call openFileInput() and pass it the name of the file to read. This returns a FileInputStream.
+//    	Read bytes from the file with read().
+//    	Then close the stream with close().
+    	
+    	
+//    	String FILENAME = "hello_file";
+//    	String string;
+//    	FileInputStream fis = openFileInput(FILENAME);
+//    	fis.read();
+//    	fis.close();
+//    	
+    	
+    	//String filename = "myfile";
+        //String outputString = "Hello world!";
+
+//        try {
+//            FileOutputStream outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+//            outputStream.write(outputString.getBytes());
+//            outputStream.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            FileInputStream inputStream = openFileInput(filename);
+//            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+//            StringBuilder total = new StringBuilder();
+//            String line;
+//            while ((line = r.readLine()) != null) {
+//                total.append(line);
+//            }
+//            r.close();
+//            inputStream.close();
+//            Log.d("File", "File contents: " + total);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    	
+    	
     }
+	
+	@Override
+    protected void onStop(){
+       super.onStop();
+       // persist stuff here..... from controller.... 
+//       String FILENAME = "hello_file";
+//       String string = "hello world!";
+//
+//       FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+//       fos.write(string.getBytes());
+//       fos.close();
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,6 +174,7 @@ public class MainActivity extends Activity {
     
     public void editPencilClicked(View view) {
     	editMode  = !editMode;
+    	Sudoku.setMode(editMode);
     	Button button = (Button) findViewById(R.id.editAndPencil);
     	if (editMode)
     	{

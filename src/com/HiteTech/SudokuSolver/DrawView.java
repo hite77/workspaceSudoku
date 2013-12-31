@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import com.example.myfirstapp.R;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,13 +14,50 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 
 public class DrawView extends View implements OnTouchListener {
 	
-	public int selection_x = -1; int selection_y = -1;
+	public int selection_x = 0; int selection_y = 0;
 	
+	private Button Btn1 = null;
+	private Button Btn2 = null;
+	private Button Btn3 = null;
+	private Button Btn4 = null;
+	private Button Btn5 = null;
+	private Button Btn6 = null;
+	private Button Btn7 = null;
+	private Button Btn8 = null;
+	private Button Btn9 = null;
+	
+	
+	
+	private boolean EditMode = true;
 	private board Board;
 	private boolean initialized = false;
+	private View ParentContext;
+	
+	public void setMode(boolean editMode)
+	{
+		EditMode = editMode;
+	}
+	
+	public void setParentContext(View findViewById) {
+		ParentContext = findViewById;
+		
+		if (ParentContext != null)
+		{
+			Btn1 = (Button) ParentContext.findViewById(R.id.oneButton);
+			Btn2 = (Button) ParentContext.findViewById(R.id.twoButton);
+			Btn3 = (Button) ParentContext.findViewById(R.id.threeButton);
+			Btn4 = (Button) ParentContext.findViewById(R.id.fourButton);
+			Btn5 = (Button) ParentContext.findViewById(R.id.fiveButton);
+			Btn6 = (Button) ParentContext.findViewById(R.id.sixButton);
+			Btn7 = (Button) ParentContext.findViewById(R.id.sevenButton);
+			Btn8 = (Button) ParentContext.findViewById(R.id.eightButton);
+			Btn9 = (Button) ParentContext.findViewById(R.id.nineButton);
+		}
+	}
 	
 	public void SetBoard(board inputBoard)
 	{
@@ -29,6 +68,7 @@ public class DrawView extends View implements OnTouchListener {
 	
 	List<Point> points = new ArrayList<Point>();
 	Paint paint = new Paint();
+	
 	public DrawView(Context context) {
 		super(context);
 		setFocusable(true);
@@ -37,6 +77,7 @@ public class DrawView extends View implements OnTouchListener {
 		paint.setColor(Color.WHITE);
 		paint.setAntiAlias(true);
 	}
+	
 	public DrawView(Context context, AttributeSet attrs) { 
 		super( context, attrs );
 		setFocusable(true);
@@ -55,7 +96,40 @@ public class DrawView extends View implements OnTouchListener {
 		paint.setAntiAlias(true);
 	}
 	
+	private void updateButtonColor(Button btn, int number)
+	{
+		
+    Vector <Integer> possible = Board.getPossible(selection_x, selection_y);
     
+	if (((EditMode ) && (Board.get(selection_x, selection_y) == number)) || 
+		(!EditMode ) && (possible.contains(number)))
+		{
+			if (btn != null)
+			{
+				btn.setBackgroundColor(Color.CYAN);
+			}
+		}
+		else
+		{
+			if (btn != null)
+			{
+				btn.setBackgroundColor(Color.LTGRAY);
+			}
+		}
+	}
+	
+	public void updateButtonColors()
+	{
+		updateButtonColor(Btn1, 1);
+		updateButtonColor(Btn2, 2);
+		updateButtonColor(Btn3, 3);
+		updateButtonColor(Btn4, 4);
+		updateButtonColor(Btn5, 5);
+		updateButtonColor(Btn6, 6);
+		updateButtonColor(Btn7, 7);
+		updateButtonColor(Btn8, 8);
+		updateButtonColor(Btn9, 9);
+	}
 	
 	@Override
 	public void onDraw(Canvas canvas)
@@ -110,6 +184,8 @@ public class DrawView extends View implements OnTouchListener {
 									start_y+cell_height, paint);
 							// set color back
 							paint.setColor(Color.BLACK);
+							
+							updateButtonColors();
 						}
 				}
 				

@@ -1,5 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/guessMenu" android:enabled="true" android:titleCondensed="Guess" android:visible="true" android:title="Guess"></item>
     <item android:id="@+id/Delete" android:enabled="true" android:visible="true" android:title="Delete" android:titleCondensed="Delete"></item>
+    <item android:id="@+id/undo" android:title="undo" android:titleCondensed="undo" android:enabled="true" android:visible="true"></item>
 
 </menu>
