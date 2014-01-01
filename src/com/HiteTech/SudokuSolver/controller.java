@@ -80,5 +80,16 @@ public class controller {
 	public void Undo() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void Reset() {
+		while (Boards.size() > 1)
+		{
+			Boards.remove(Position);
+			if (Position >= Boards.size()) Position = Boards.size()-1;
+		}
+		Boards.remove(0);
+		board Board = new board();
+		Boards.add(Board);
 	}	
 }

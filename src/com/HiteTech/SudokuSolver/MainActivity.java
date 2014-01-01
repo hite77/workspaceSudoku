@@ -1,5 +1,9 @@
 package com.HiteTech.SudokuSolver;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
 import com.example.myfirstapp.R;
 
 import android.os.Bundle;
@@ -24,6 +28,11 @@ public class MainActivity extends Activity {
             	deleteClicked();
             	return true;
             case R.id.undo:
+            	return true;
+            case R.id.resetAll:
+            	Controller.Reset();
+            	Sudoku.SetBoard(Controller.GetBoard());
+            	Sudoku.invalidate();
             	return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -64,7 +73,7 @@ public class MainActivity extends Activity {
 //    	fis.close();
 //    	
     	
-    	//String filename = "myfile";
+    	String filename = "myfile";
         //String outputString = "Hello world!";
 
 //        try {
@@ -75,20 +84,19 @@ public class MainActivity extends Activity {
 //            e.printStackTrace();
 //        }
 //
-//        try {
-//            FileInputStream inputStream = openFileInput(filename);
-//            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-//            StringBuilder total = new StringBuilder();
-//            String line;
-//            while ((line = r.readLine()) != null) {
-//                total.append(line);
-//            }
-//            r.close();
-//            inputStream.close();
-//            Log.d("File", "File contents: " + total);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            FileInputStream inputStream = openFileInput(filename);
+            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder total = new StringBuilder();
+            String line;
+            while ((line = r.readLine()) != null) {
+                total.append(line);
+            }
+            r.close();
+            inputStream.close();
+        } catch (Exception e) {
+           // problem with file....  do nothing... should have empty board.
+        }
     	
     	
     }
@@ -184,6 +192,7 @@ public class MainActivity extends Activity {
     	{
     		button.setText("Pencil");
     	}
+    	Sudoku.invalidate();
     }   
     
     public void leftClicked(View view) {
