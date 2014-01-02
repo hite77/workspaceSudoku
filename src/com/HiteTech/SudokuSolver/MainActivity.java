@@ -2,12 +2,16 @@ package com.HiteTech.SudokuSolver;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Vector;
 
 import com.example.myfirstapp.R;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,60 +64,150 @@ public class MainActivity extends Activity {
         Sudoku.SetBoard(Controller.GetBoard());
         Sudoku.updateButtonColors();
     	
-    	// pull persistance and place into controller, or build a new one?
-//    	Call openFileInput() and pass it the name of the file to read. This returns a FileInputStream.
-//    	Read bytes from the file with read().
-//    	Then close the stream with close().
+    	String filename = "sudokuBoards";
+    	board Board = Controller.GetBoard();
     	
-    	
-//    	String FILENAME = "hello_file";
-//    	String string;
-//    	FileInputStream fis = openFileInput(FILENAME);
-//    	fis.read();
-//    	fis.close();
-//    	
-    	
-    	String filename = "myfile";
-        //String outputString = "Hello world!";
-
-//        try {
-//            FileOutputStream outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-//            outputStream.write(outputString.getBytes());
-//            outputStream.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-        try {
+    	try {
             FileInputStream inputStream = openFileInput(filename);
             BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder total = new StringBuilder();
             String line;
-            while ((line = r.readLine()) != null) {
-                total.append(line);
+            
+            int i=0;
+            int j=0;
+            
+            
+            while ((line = r.readLine()) != null) {	
+            	if (i==9)
+            	{
+            		// reset count
+            		i=0; 
+            		j=0;
+            		//build new board
+            		Controller.AddBoard();
+            		Controller.Right();
+            		Board = Controller.GetBoard();
+            	}
+            
+            	// logic....	
+            	if (line.substring(0, 1).compareTo("S") == 0)
+            	{
+            		Board.set(Integer.parseInt(line.substring(1, 2)), i, j);	
+            	}
+            	else if (line.substring(0, 1).compareTo("H") == 0)
+            	{
+            		for (int loop=1; loop< line.length(); loop++)
+            			Board.toggle(Integer.parseInt(line.substring(loop, loop+1)), i, j);
+            	}
+            	// increment....
+            	j++;
+            
+            	if (j==9)
+            	{
+            		j=0;
+            		i=i+1;
+            	}    
             }
+            MessageBox("Done loading Sudoku");
+            Sudoku.invalidate();
+            
             r.close();
             inputStream.close();
+       
         } catch (Exception e) {
            // problem with file....  do nothing... should have empty board.
         }
     	
-    	
+    	while (Controller.LeftEnabled())
+   	 	{
+    		Controller.Left();
+   	 	} 
+        Sudoku.SetBoard(Controller.GetBoard());
     }
 	
 	@Override
     protected void onStop(){
        super.onStop();
        // persist stuff here..... from controller.... 
-//       String FILENAME = "hello_file";
-//       String string = "hello world!";
-//
-//       FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-//       fos.write(string.getBytes());
-//       fos.close();
+	
+     String filename = "sudokuBoards";
+
+     FileOutputStream outputStream = null;
+	
+     try 
+     {
+    	 outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+	 
+    	 // go to first board....
+    	 while (Controller.LeftEnabled())
+    	 {
+    		 Controller.Left();
+    	 } 
+         
+    	 board currentBoard = Controller.GetBoard();
+    	 OutputBoard(currentBoard, outputStream);
+         
+    	 // if right enabled... then do the others
+    	 while ((Controller.RightEnabled()))
+    	 {
+    		 Controller.Right();
+    		 currentBoard = Controller.GetBoard();
+    		 OutputBoard(currentBoard, outputStream);
+    	 }	 
+		outputStream.close();
+	} 
+	catch (IOException e) 
+	{
+	}
+}
+
+    private void OutputBoard(board currentBoard, FileOutputStream outputStream) {
+		
+    	String output = "";
+    	
+    	for (int i=0; i<9; i++)
+       	 for (int j=0; j<9; j++)
+       	 {
+       		 int cellSolution = currentBoard.get(i,j);
+       		 if (cellSolution > 0)
+       		 {
+       			 output = "S" + Integer.toString(cellSolution);
+       		 }
+       		 else
+       		 {
+       			 output = "H";
+       			 Vector<Integer> cellPossible = currentBoard.getPossible(i, j);
+       			 if (!cellPossible.contains(1))
+       				 output = output + "1";
+       			 if (!cellPossible.contains(2))
+       				 output = output + "2";
+       			 if (!cellPossible.contains(3))
+       				 output = output + "3";
+       			 if (!cellPossible.contains(4))
+       				 output = output + "4";
+       			 if (!cellPossible.contains(5))
+       				 output = output + "5";
+       			 if (!cellPossible.contains(6))
+       				 output = output + "6";
+       			 if (!cellPossible.contains(7))
+       				 output = output + "7";
+       			 if (!cellPossible.contains(8))
+       				 output = output + "8";
+       			 if (!cellPossible.contains(9))
+       				 output = output + "9";
+       		 }
+       		 try {
+				outputStream.write(output.getBytes());
+				outputStream.write(System.getProperty("line.separator").getBytes());
+			  } 
+       		 catch (IOException e) 
+       		 {
+			 }
+       		 
+       	 }
+       
 	}
 
-    @Override
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);

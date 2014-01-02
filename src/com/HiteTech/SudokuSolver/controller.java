@@ -91,5 +91,10 @@ public class controller {
 		Boards.remove(0);
 		board Board = new board();
 		Boards.add(Board);
+	}
+
+	public void AddBoard() {
+		board Board = new board();
+		Boards.add(Board);
 	}	
 }
