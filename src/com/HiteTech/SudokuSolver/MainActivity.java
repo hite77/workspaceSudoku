@@ -124,41 +124,50 @@ public class MainActivity extends Activity {
         Sudoku.SetBoard(Controller.GetBoard());
     }
 	
+	private void persist()
+	{
+		String filename = "sudokuBoards";
+
+	     FileOutputStream outputStream = null;
+		
+	     try 
+	     {
+	    	 outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+		 
+	    	 // go to first board....
+	    	 while (Controller.LeftEnabled())
+	    	 {
+	    		 Controller.Left();
+	    	 } 
+	         
+	    	 board currentBoard = Controller.GetBoard();
+	    	 OutputBoard(currentBoard, outputStream);
+	         
+	    	 // if right enabled... then do the others
+	    	 while ((Controller.RightEnabled()))
+	    	 {
+	    		 Controller.Right();
+	    		 currentBoard = Controller.GetBoard();
+	    		 OutputBoard(currentBoard, outputStream);
+	    	 }	 
+			outputStream.close();
+		} 
+		catch (IOException e) 
+		{
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		persist();
+	}
+
 	@Override
     protected void onStop(){
        super.onStop();
-       // persist stuff here..... from controller.... 
-	
-     String filename = "sudokuBoards";
-
-     FileOutputStream outputStream = null;
-	
-     try 
-     {
-    	 outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-	 
-    	 // go to first board....
-    	 while (Controller.LeftEnabled())
-    	 {
-    		 Controller.Left();
-    	 } 
-         
-    	 board currentBoard = Controller.GetBoard();
-    	 OutputBoard(currentBoard, outputStream);
-         
-    	 // if right enabled... then do the others
-    	 while ((Controller.RightEnabled()))
-    	 {
-    		 Controller.Right();
-    		 currentBoard = Controller.GetBoard();
-    		 OutputBoard(currentBoard, outputStream);
-    	 }	 
-		outputStream.close();
-	} 
-	catch (IOException e) 
-	{
-	}
-}
+       persist();  
+     }
 
     private void OutputBoard(board currentBoard, FileOutputStream outputStream) {
 		
