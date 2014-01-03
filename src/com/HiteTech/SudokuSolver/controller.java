@@ -29,14 +29,14 @@ public class controller {
 		for (int loop=0; loop<GetBoard().getPossible(i, j).size(); loop++)
 			possible.add(GetBoard().getPossible(i, j).get(loop));
 		
-		GetBoard().set(possible.get(0), i, j);
+		GetBoard().setGuess(possible.get(0), i, j);
 		// loop through other possibles, starting at 1....
-		for (int loop=1; loop < possible.size(); ++loop)
+		for (int loop=possible.size()-1; loop > 0; --loop)
 		{
 			// clone GetBoard..... create new constructor that takes a board and clones...
 			board Board = new board(GetBoard());
 			// set possible in correct location
-			Board.set(possible.get(loop), i, j);
+			Board.setGuess(possible.get(loop), i, j);
 			// add board in after Position in vector....
 			Boards.add(Position+1, Board);
 		}

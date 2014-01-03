@@ -166,6 +166,19 @@ public class DrawView extends View implements OnTouchListener {
 				start_x = (float)i * cell_width;
 				start_y = (float)j * cell_height;
 				
+				
+				if (Board.isGuess(i, j))
+				{
+					fillWithColor(canvas, cell_width, cell_height, start_x,
+							start_y, Color.YELLOW);
+				}
+				
+				if (Board.getBad(i, j))
+				{
+					fillWithColor(canvas, cell_width, cell_height, start_x,
+							start_y, Color.RED);
+				}
+				
 				// points... first entry... if it exists fill with blue....
 				if (points.size() == 1)
 				{
@@ -178,12 +191,8 @@ public class DrawView extends View implements OnTouchListener {
 							// set selection
 							selection_x = i; selection_y = j;
 							
-							// set color and fill
-							paint.setColor(Color.CYAN);
-							canvas.drawRect(start_x, start_y, start_x+cell_width, 
-									start_y+cell_height, paint);
-							// set color back
-							paint.setColor(Color.BLACK);
+							fillWithColor(canvas, cell_width, cell_height, start_x,
+									start_y, Color.CYAN);
 							
 							updateButtonColors();
 						}
@@ -311,6 +320,17 @@ public class DrawView extends View implements OnTouchListener {
 		//canvas.drawText(text, (float)50.0, (float)50.0, paint);
 		
 	}
+
+	private void fillWithColor(Canvas canvas, float cell_width,
+			float cell_height, float start_x, float start_y, int color) {
+		// set color and fill
+		paint.setColor(color);
+		canvas.drawRect(start_x, start_y, start_x+cell_width, 
+				start_y+cell_height, paint);
+		// set color back
+		paint.setColor(Color.BLACK);
+	}
+	
 	public boolean onTouch(View view, MotionEvent event)
 	{
 		Point point = new Point();

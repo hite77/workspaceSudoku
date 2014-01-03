@@ -6,6 +6,8 @@ import java.util.Vector;
 public class cell {
 
 	Vector<Integer> possible = new Vector<Integer>();
+	private boolean bad = false;
+	private boolean guess = false;
 	
 	public cell()
 	{
@@ -29,11 +31,6 @@ public class cell {
 	public void remove(int i) {
 		if (possible.indexOf(i) >= 0)
 			possible.remove(possible.indexOf(i));
-		
-//		if (possible.size() == 1)
-//		{
-//			solution = possible.get(0);
-//		}
 	}
 
 	public void set(int i) {
@@ -60,5 +57,21 @@ public class cell {
 
 	public void setPossible(Vector<Integer> possible2) {
 		possible = possible2;	
+	}
+
+	public void setBad(boolean set) {
+		bad = set;
+	}
+
+	public boolean getBad() {
+		return bad;
+	}
+
+	public boolean isGuess() {
+		return guess ;
+	}
+	
+	public void setGuess() {
+		guess = true;
 	}
 }

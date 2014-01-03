@@ -9,8 +9,7 @@ public class board {
 	private cell[][] hcells = new cell[9][9];
 	private cell[][] vcells = new cell[9][9];
 	private cell[][] quads = new cell[9][9];
-	
-	
+
 	public board() {
 		for (int i=0;i<9; i++)
 			for (int j=0;j<9;j++)
@@ -84,15 +83,20 @@ public class board {
 
 	public void set(int number, int x, int y) {
 		memory[x][y].set(number);
+		badBoard();
 	}
 
-
+	public void setGuess(Integer integer, int i, int j) {
+		set(integer, i, j);
+		memory[i][j].setGuess();
+	}
 	public int get(int i, int j) {
 		return memory[i][j].getSolution();
 	}
 
 	public void toggle(int value, int i, int j) {
 		memory[i][j].toggle(value);
+		badBoard();
 	}
 
 	public Vector<Integer> getPossible(int i, int j) {
@@ -115,6 +119,7 @@ public class board {
 					}
 				}
 			}
+		badBoard();
 	}
 
 	private int calcQuad(int col, int row) {
@@ -146,4 +151,99 @@ public class board {
 		
 	}
 
+	public boolean badBoard() {
+		boolean returnValue = false;
+		
+		// clear all bad first
+		for (int i=0; i<9; i++)
+			for (int j=0; j<9; j++)
+				memory[i][j].setBad(false);
+		
+		// 1 check for a blank hint somewhere is bad if this is so, and no solution
+		if (blankHintFound())
+			returnValue = true;
+		// 2 check for two of same solution in same rank
+		if (twoDuplicateNumbers())
+			returnValue = true;
+		// 3 check for three or more sets of same 2 hints.
+		if (threeOrMoreDoubleHints())
+			returnValue = true;
+		return returnValue;
+	}
+
+	private boolean twoDuplicateNumbers() {
+		boolean returnValue = false;
+		// need to check all horizontal, vertical, and grids
+		//hcells[9][9]
+		//vcells[9][9]
+		//quads[9][9]
+		// zero thru 9.... 
+		
+		for (int i=0; i<9; i++)
+		{
+			if (lookForSingles(hcells[i])) returnValue = true;
+			if (lookForSingles(vcells[i])) returnValue = true;
+			if (lookForSingles(quads[i]))  returnValue = true;
+		}
+		return returnValue;
+	}
+
+	private boolean lookForSingles(cell[] cells) {
+		// read in values, if in vector, set them to bad....
+		boolean returnValue = false;
+		Vector<Integer> singles = new Vector<Integer>();
+		for (int i=0; i<9; i++)
+		{
+			int singleValue = pullSingle(cells[i]);
+			if ((singleValue != 0) && singles.contains(singleValue))
+			{
+				cells[i].setBad(true);
+				for (int j=0; j<singles.size(); j++)
+					if (singleValue == singles.elementAt(j))
+						cells[j].setBad(true);
+				returnValue = true;
+			}
+			else
+			{
+				singles.add(singleValue);
+			}
+		}
+		return returnValue;
+	}
+
+	private int pullSingle(cell cell) {
+		int returnValue = 0;
+		if (cell.getSolution() > 0)
+			returnValue = cell.getSolution();
+		else if (cell.getPossible().size() == 1)
+			returnValue = cell.getPossible().firstElement();
+		return returnValue;
+	}
+
+	private boolean threeOrMoreDoubleHints() { 
+		return false;
+	}
+
+	private boolean blankHintFound() {
+		boolean returnValue = false;
+		for (int i=0; i<9; i++)
+			for (int j=0; j<9; j++)
+			{
+				if (memory[i][j].getPossible().isEmpty() && memory[i][j].getSolution() == 0)
+				{
+					memory[i][j].setBad(true);
+					returnValue = true;
+				}
+			}
+		return returnValue;
+	}
+	
+	public boolean getBad(int i, int j) {
+		return memory[i][j].getBad();
+	}
+
+	// note ... refactor todo .... write getCell method, and replace getGuess, getBad... here 
+	public boolean isGuess(int i, int j) {
+		return memory[i][j].isGuess();
+	}
 }
