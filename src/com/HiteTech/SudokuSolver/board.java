@@ -173,12 +173,6 @@ public class board {
 
 	private boolean twoDuplicateNumbers() {
 		boolean returnValue = false;
-		// need to check all horizontal, vertical, and grids
-		//hcells[9][9]
-		//vcells[9][9]
-		//quads[9][9]
-		// zero thru 9.... 
-		
 		for (int i=0; i<9; i++)
 		{
 			if (lookForSingles(hcells[i])) returnValue = true;
@@ -203,10 +197,7 @@ public class board {
 						cells[j].setBad(true);
 				returnValue = true;
 			}
-			else
-			{
-				singles.add(singleValue);
-			}
+			singles.add(singleValue);
 		}
 		return returnValue;
 	}
@@ -216,12 +207,82 @@ public class board {
 		if (cell.getSolution() > 0)
 			returnValue = cell.getSolution();
 		else if (cell.getPossible().size() == 1)
-			returnValue = cell.getPossible().firstElement();
+			returnValue = cell.getPossible().elementAt(0);
 		return returnValue;
 	}
 
 	private boolean threeOrMoreDoubleHints() { 
-		return false;
+		boolean returnValue = false;
+		for (int i=0; i<9; i++)
+		{
+			if (lookForDoubles(hcells[i])) returnValue = true;
+			if (lookForDoubles(vcells[i])) returnValue = true;
+			if (lookForDoubles(quads[i]))  returnValue = true;
+		}
+		return returnValue;
+	}
+
+	class twoHints {
+		public int first;
+		public int second;
+	}
+	
+	private boolean lookForDoubles(cell[] cells) {
+				boolean returnValue = false;
+				Vector<twoHints> doubles = new Vector<twoHints>();
+				
+				for (int i=0; i<9; i++)
+				{
+					twoHints doublesValue = pullDouble(cells[i]);
+					
+					if (doublesValue.first != 0 
+					  && indexOf(doubles, doublesValue) > -1
+					  && lastIndexOf(doubles, doublesValue) > -1
+					  && indexOf(doubles, doublesValue) != lastIndexOf(doubles, doublesValue))
+					{
+						cells[i].setBad(true);
+						cells[indexOf(doubles, doublesValue)].setBad(true);
+						cells[lastIndexOf(doubles, doublesValue)].setBad(true);
+						returnValue = true;
+					}
+					doubles.add(doublesValue);
+				}
+				return returnValue;
+	}
+
+	private int indexOf(Vector<twoHints> doubles, twoHints doublesValue) {
+		int returnValue = -1;
+		for (int i=0; i<doubles.size(); i++)
+			if (  doubles.elementAt(i).first == doublesValue.first
+			   && doubles.elementAt(i).second== doublesValue.second) 
+			{
+				returnValue = i;
+			}
+		return returnValue;
+	}
+	
+	private int lastIndexOf(Vector<twoHints> doubles, twoHints doublesValue) {
+		int returnValue = -1;
+		for (int i=doubles.size()-1; i>-1; i--)
+			if (  doubles.elementAt(i).first == doublesValue.first
+			   && doubles.elementAt(i).second== doublesValue.second) 
+			{
+				returnValue = i;
+			}
+		return returnValue;
+	}
+
+	private twoHints pullDouble(cell cell) {
+		twoHints result = new twoHints();
+		result.first = 0;
+		result.second = 0;
+		
+		if (cell.getPossible().size() == 2)
+		{
+			result.first = cell.getPossible().elementAt(0);
+			result.second = cell.getPossible().elementAt(1);
+		}
+		return result;
 	}
 
 	private boolean blankHintFound() {
