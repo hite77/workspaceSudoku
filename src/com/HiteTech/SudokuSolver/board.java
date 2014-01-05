@@ -222,7 +222,7 @@ public class board {
 		return returnValue;
 	}
 
-	class twoHints {
+	public class twoHints {
 		public int first;
 		public int second;
 	}
@@ -306,5 +306,46 @@ public class board {
 	// note ... refactor todo .... write getCell method, and replace getGuess, getBad... here 
 	public boolean isGuess(int i, int j) {
 		return memory[i][j].isGuess();
+	}
+
+	public boolean solutionBoard() {
+		for (int i=0; i<9; i++)
+			for (int j=0; j<9; j++)
+				if (memory[i][j].getSolution() == 0) return false;
+		if (badBoard()) return false;
+		return true;
+	}
+
+	public boolean convertHintToSolution() {
+		boolean returnValue = false;
+		for (int i=0; i<9; i++)
+			for (int j=0; j<9; j++)
+				if (memory[i][j].getPossible().size()==1) 
+					{
+					memory[i][j].set(memory[i][j].getPossible().firstElement());
+					returnValue = true;
+					}
+		return returnValue;
+	}
+
+	public twoHints leastHints() {
+		twoHints location = new twoHints();
+		location.first = 0; location.second=0;
+		
+		int countOfHints=9;
+		
+		for (int i=0; i<9; i++)
+			for (int j=0; j<9; j++)
+			{
+				int size = memory[i][j].getPossible().size();
+				if ((size < countOfHints) && (size > 0))
+				{
+					countOfHints = size;
+					location.first = i;
+					location.second = j;
+				}
+			}
+		
+		return location;
 	}
 }
