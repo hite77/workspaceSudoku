@@ -156,7 +156,8 @@
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Solve" />
+			    android:text="Solve" 
+			    android:onClick="solveClicked"/>
 
 			<Button
 			    android:id="@+id/generate"

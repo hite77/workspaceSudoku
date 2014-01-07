@@ -2,6 +2,8 @@ package com.HiteTech.SudokuSolver;
 
 import java.util.Vector;
 
+import com.HiteTech.SudokuSolver.board.twoHints;
+
 public class controller {
 
 	private Vector<board> Boards = new Vector<board>();
@@ -64,7 +66,7 @@ public class controller {
 	}
 
 	public boolean RightEnabled() {
-		if (Position+1 <= Boards.size()-1) 
+		if (Position < Boards.size()-1) 
 	    {
 			return true; 
 	    }
@@ -91,12 +93,94 @@ public class controller {
 			if (Position >= Boards.size()) Position = Boards.size()-1;
 		}
 		Boards.remove(0);
-		board Board = new board();
-		Boards.add(Board);
+		AddBoard();
 	}
 
 	public void AddBoard() {
 		board Board = new board();
 		Boards.add(Board);
+	}
+
+	public boolean Solve(boolean keepSolving) { // still working on this to make sure it will exhaustively look up solutions...
+		ClearOtherBoards();
+		//setup variables in while
+		boolean keepgoing = true;
+		int numberOfSolutions = 0;
+		
+		while ((keepSolving) || (keepgoing))
+		{
+			boolean loopOnce = true;
+			while (loopOnce)
+			{
+				loopOnce = false;
+				GetBoard().calculateHints(); 
+				if (GetBoard().convertHintToSolution()) // repeat while....
+				{
+					loopOnce = true;
+				}
+				if (GetBoard().solutionBoard())  // exit out....
+				{
+					loopOnce = false;
+					keepgoing = false;
+					numberOfSolutions++;
+					if (numberOfSolutions>1) keepSolving = false;
+					if (RightEnabled())
+					{
+						Right();
+					}
+					else
+					{
+						keepSolving = false;
+					}
+				}
+				if (GetBoard().badBoard())
+				{
+					//try to delete.... if it does not work.... aka last board... exit
+					if ((Count() == 1) || (!RightEnabled()))
+					{
+						Reset();
+						// should send message that no solution....
+						//exit out...
+						loopOnce = false;
+						keepgoing = false;
+						keepSolving = false;
+					}
+					Delete();
+				}
+			}
+		    twoHints location = GetBoard().leastHints();
+		    Guess(location.first, location.second);
+		}
+		MoveToLeft();
+		ClearOtherBoards();
+		if (numberOfSolutions==1) return true;
+		return false;
+	}
+
+	private void MoveToLeft() {
+		while (LeftEnabled())
+		{
+			Left();
+		}
+	}
+	
+	private void ClearOtherBoards() {
+		while (LeftEnabled())
+		{
+			Left();
+			Delete();
+		}
+		
+		Right();
+		
+		while (Count() > 1)
+		{
+			Delete();
+		}
+	}
+
+	public void Generate() {
+		// TODO Auto-generated method stub
+		
 	}	
 }
