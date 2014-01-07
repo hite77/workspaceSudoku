@@ -105,6 +105,7 @@ public class controller {
 		ClearOtherBoards();
 		//setup variables in while
 		boolean keepgoing = true;
+		boolean immediatelyQuit = false;
 		int numberOfSolutions = 0;
 		
 		while ((keepSolving) || (keepgoing))
@@ -138,18 +139,21 @@ public class controller {
 					//try to delete.... if it does not work.... aka last board... exit
 					if ((Count() == 1) || (!RightEnabled()))
 					{
-						Reset();
-						// should send message that no solution....
+						if (numberOfSolutions == 0) Reset();
 						//exit out...
 						loopOnce = false;
 						keepgoing = false;
 						keepSolving = false;
+						immediatelyQuit = true;
 					}
 					Delete();
 				}
 			}
-		    twoHints location = GetBoard().leastHints();
-		    Guess(location.first, location.second);
+		    if (!immediatelyQuit)
+		    {
+		    	twoHints location = GetBoard().leastHints();
+		    	Guess(location.first, location.second);
+		    }
 		}
 		MoveToLeft();
 		ClearOtherBoards();
