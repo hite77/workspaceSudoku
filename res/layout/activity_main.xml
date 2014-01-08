@@ -110,16 +110,16 @@
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Left" 
-			    android:onClick="leftClicked"/>
+			    android:onClick="leftClicked"
+			    android:text="Left" />
 
 			<Button
 			    android:id="@+id/right"
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Right" 
-			    android:onClick="rightClicked"/>
+			    android:onClick="rightClicked"
+			    android:text="Right" />
 
         </LinearLayout>
 		<LinearLayout
@@ -164,7 +164,8 @@
 			    style="?android:attr/buttonStyleSmall"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Generate" />
+			    android:text="Generate"
+			    android:onClick="generateClicked" />
 
 		</LinearLayout>
 		

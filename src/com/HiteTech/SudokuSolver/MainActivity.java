@@ -316,6 +316,12 @@ public class MainActivity extends Activity {
     	Sudoku.invalidate();
     }
     
+    public void generateClicked(View view) {
+    	Controller.Generate();
+    	Sudoku.SetBoard(Controller.GetBoard());
+    	Sudoku.invalidate();
+    }
+    
     public void guessClicked() {
     	if (Sudoku.selection_x > -1)
     	{

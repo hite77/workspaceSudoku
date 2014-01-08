@@ -167,6 +167,8 @@ public class DrawView extends View implements OnTouchListener {
 				start_y = (float)j * cell_height;
 				
 				
+				if (initialized)
+				{
 				if (Board.isGuess(i, j))
 				{
 					fillWithColor(canvas, cell_width, cell_height, start_x,
@@ -178,7 +180,7 @@ public class DrawView extends View implements OnTouchListener {
 					fillWithColor(canvas, cell_width, cell_height, start_x,
 							start_y, Color.RED);
 				}
-				
+				}
 				// points... first entry... if it exists fill with blue....
 				if (points.size() == 1)
 				{
