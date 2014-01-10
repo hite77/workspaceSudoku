@@ -83,7 +83,7 @@ public class board {
 
 	public void set(int number, int x, int y) {
 		memory[x][y].set(number);
-		badBoard();
+		badBoard();   // remove this from here.  Is calling badBoard every time a cell is set, even in solver.
 	}
 
 	public void setGuess(Integer integer, int i, int j) {
@@ -338,7 +338,7 @@ public class board {
 			for (int j=0; j<9; j++)
 			{
 				int size = memory[i][j].getPossible().size();
-				if ((size < countOfHints) && (size > 0))
+				if ((size < countOfHints) && (size > 1))
 				{
 					countOfHints = size;
 					location.first = i;
@@ -348,4 +348,93 @@ public class board {
 		
 		return location;
 	}
+
+	public boolean BruteForce() {
+		// returns false if no solution.....
+		
+		// need to track cells as we go, and if solution already in there don't set / backtrack to it
+		
+		//int i=0; int j=0; //work x first, then y.... need to stop at 8.
+		// either figure out a recursive way and/or straight forward way to backtrack...
+		
+		// find first cell without solution....
+//		while((memory[i][j].getSolution() != 0) && (j < 9))
+//		{
+//			i++;
+//			if(i==9)
+//			{
+//				i=0;
+//				j++;
+//			}
+//		}
+//		
+//		if (j==9)
+//		{
+//			if (solutionBoard()) return true; // is already a solution to start with
+//			return false; // is not a valid solution to start with
+//		}
+//		return (calculateCell(i, j, 1) && solutionBoard()); // start recursive algorithm
+		return false;
+	}
+	public boolean calculateCell (int i, int j, int value)
+	{
+		memory[8][8].set(1);
+		if (twoDuplicateNumbers())
+			memory[8][8].set(2);
+		return true;
+		// cycle thru cells with no solution....
+		// try and place 1's, then 2's...etc... up to 9....
+		// if none work... i.e. 9, then backtrack, and move that number up...
+
+		// let’s see…. set i,j to value
+//		int originali = i;
+//		int originalj = j;
+//		memory[i][j].set(value);
+		// see if valid…… (no dups)
+		// invalid…. try next higher number
+//		while(twoDuplicateNumbers())
+//		{
+//			value++;
+//			if (value==10)
+//			{
+//				memory[i][j].set(0); // backtracking
+//				return false;
+//			}
+//			memory[i][j].set(value);
+//		}
+		// valid… call next i, j value….
+		//   note call calculate cell for next value...
+		//   skip over cells with a solution….
+//		while((j<9) && (memory[i][j].getSolution() != 0))
+//		{
+//			i++;
+//			if (i>8)
+//			{
+//				i=0;
+//				j++;
+//			}
+//		}
+//		if (j==9)
+//		{
+			// stepped off end of board
+//			return true; // this will be the last call.....
+//		}
+		//  if next calculateCell failed…..
+//		value = 1;
+//		while((value != 10) && !calculateCell(i, j, value))
+//		{
+//			value++;
+//		}
+//		if(value !=10)
+//			return true;
+		// need to increment this cell... and repeat all this logic.... so call calculateCell
+//		value = memory[originali][originalj].getSolution();
+//		if (value==9) 
+//			{
+//			memory[originali][originalj].set(0); // backtracking
+//			return false;
+//			}
+//		return calculateCell(originali, originalj, value+1);
+	}
+		
 }

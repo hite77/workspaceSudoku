@@ -32,7 +32,7 @@ public class controller {
 		// research way to keep several boards
 		// need to copy from where cursor is at and make N number (N<=9) boards
 		// place values into each one.
-		if (GetBoard().getPossible(i, j).size() == 0) return;
+		if (GetBoard().getPossible(i, j).size() <= 1) return;
 		
 		Vector<Integer> possible = new Vector<Integer>(); 
 		for (int loop=0; loop<GetBoard().getPossible(i, j).size(); loop++)
@@ -110,27 +110,34 @@ public class controller {
 		ClearOtherBoards();
 		//setup variables in while
 		boolean keepgoing = true;
-		boolean immediatelyQuit = false;
 		int numberOfSolutions = 0;
 		
 		while ((keepSolving) || (keepgoing))
 		{
-			boolean loopOnce = true;
-			while (loopOnce)
+			boolean helpSolved = false;
+			if (GetBoard().badBoard())
 			{
-				loopOnce = false;
-				GetBoard().calculateHints(); 
-				if (GetBoard().convertHintToSolution()) // repeat while....
+				//try to delete.... if it does not work.... aka last board... exit
+				if ((Count() == 1) || (!RightEnabled()))
 				{
-					loopOnce = true;
+					if (numberOfSolutions == 0) Reset();
+					//exit out...
+					keepgoing = false;
+					keepSolving = false;
 				}
+				Delete();
+			}
+			else
+			{
+				GetBoard().calculateHints(); 
+				helpSolved = GetBoard().convertHintToSolution(); 
+				
 				if (GetBoard().solutionBoard())  // exit out....
 				{
-					loopOnce = false;
 					keepgoing = false;
 					numberOfSolutions++;
 					if (numberOfSolutions>1) keepSolving = false;
-					if (RightEnabled())
+					if ((keepSolving) && (RightEnabled()))
 					{
 						Right();
 					}
@@ -139,26 +146,12 @@ public class controller {
 						keepSolving = false;
 					}
 				}
-				if (GetBoard().badBoard())
+				else if(!helpSolved)
 				{
-					//try to delete.... if it does not work.... aka last board... exit
-					if ((Count() == 1) || (!RightEnabled()))
-					{
-						if (numberOfSolutions == 0) Reset();
-						//exit out...
-						loopOnce = false;
-						keepgoing = false;
-						keepSolving = false;
-						immediatelyQuit = true;
-					}
-					Delete();
+					twoHints location = GetBoard().leastHints();
+					Guess(location.first, location.second);
 				}
 			}
-		    if (!immediatelyQuit)
-		    {
-		    	twoHints location = GetBoard().leastHints();
-		    	Guess(location.first, location.second);
-		    }
 		}
 		MoveToLeft();
 		ClearOtherBoards();
@@ -213,7 +206,11 @@ public class controller {
 		while (coords.size() > 0)
 		{
 			// randomly pick from list.... 0 to size -1.... 
-			int randomInt = randomGenerator.nextInt(coords.size());
+			int randomInt;
+			if (coords.size() == 1)
+				randomInt = 0;
+			else
+				randomInt = randomGenerator.nextInt(coords.size());
 			//copy hints from selected cell
 			Vector<Integer> possible = filledBoard.getPossible(coords.get(randomInt).x, coords.get(randomInt).y);
 			if (possible.size() == 0)
@@ -224,10 +221,9 @@ public class controller {
 			else if (possible.size() == 1)
 			{
 				// only one possible.  Convert it to solution.
-				while(filledBoard.convertHintToSolution())
-				{
-					filledBoard.calculateHints();
-				}
+				filledBoard.convertHintToSolution();
+				filledBoard.calculateHints();
+			
 				coords.remove(randomInt);
 			}
 			else
