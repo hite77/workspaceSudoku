@@ -379,17 +379,32 @@ public class board {
 	public boolean calculateCell (int i, int j, int value)
 	{
 		if (i==9) return true;
-		
+		boolean isSolutionCell = true;
 		if (memory[i][j].getSolution() == 0)
 		{
+			isSolutionCell = false;
 			memory[i][j].set(value);
 			while (twoDuplicateNumbers())
 			{
 				value++;
+				if (value == 10)
+				{
+					memory[i][j].set(0);
+					return false;
+				}
 				memory[i][j].set(value);
 			}
 		}
-		calculateCell (i+1, j, 1);
+		if (!calculateCell (i+1, j, 1))
+		{
+			if (!isSolutionCell) memory[i][j].set(0);
+			if (value+1 == 10)
+			{
+				return false;
+			}
+			if(!calculateCell(i, j, value+1))
+				return false;
+		}
 		return true;
 		// cycle thru cells with no solution....
 		// try and place 1's, then 2's...etc... up to 9....
