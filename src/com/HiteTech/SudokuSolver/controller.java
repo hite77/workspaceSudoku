@@ -32,7 +32,7 @@ public class controller {
 		// research way to keep several boards
 		// need to copy from where cursor is at and make N number (N<=9) boards
 		// place values into each one.
-		if (GetBoard().getPossible(i, j).size() <= 1) return;
+		if ((GetBoard().getPossible(i, j).size() <= 1) || (GetBoard().badBoard())) return;
 		
 		Vector<Integer> possible = new Vector<Integer>(); 
 		for (int loop=0; loop<GetBoard().getPossible(i, j).size(); loop++)

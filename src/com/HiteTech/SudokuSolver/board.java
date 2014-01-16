@@ -38,6 +38,7 @@ public class board {
 			{
 				memory[i][j] = new cell();
 				if (getBoard.isGuess(i, j)) memory[i][j].setGuess();
+				
 				if (getBoard.get(i, j) > 0)
 				{
 					int val = getBoard.get(i, j);
