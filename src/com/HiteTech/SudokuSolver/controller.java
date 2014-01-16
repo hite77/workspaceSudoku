@@ -106,57 +106,66 @@ public class controller {
 		Boards.add(Board);
 	}
 
-	public boolean Solve(boolean keepSolving) { // still working on this to make sure it will exhaustively look up solutions...
-		ClearOtherBoards();
-		//setup variables in while
-		boolean keepgoing = true;
-		int numberOfSolutions = 0;
+	public boolean SolverIteration()
+	{
+		if (GetBoard().badBoard())
+			return false;
+		return true;
+	}
 		
-		while ((keepSolving) || (keepgoing))
-		{
-			boolean helpSolved = false;
-			if (GetBoard().badBoard())
-			{
-				//try to delete.... if it does not work.... aka last board... exit
-				if ((Count() == 1) || (!RightEnabled()))
-				{
-					if (numberOfSolutions == 0) Reset();
-					//exit out...
-					keepgoing = false;
-					keepSolving = false;
-				}
-				Delete();
-			}
-			else
-			{
-				GetBoard().calculateHints(); 
-				helpSolved = GetBoard().convertHintToSolution(); 
-				
-				if (GetBoard().solutionBoard())  // exit out....
-				{
-					keepgoing = false;
-					numberOfSolutions++;
-					if (numberOfSolutions>1) keepSolving = false;
-					if ((keepSolving) && (RightEnabled()))
-					{
-						Right();
-					}
-					else
-					{
-						keepSolving = false;
-					}
-				}
-				else if(!helpSolved)
-				{
-					twoHints location = GetBoard().leastHints();
-					Guess(location.first, location.second);
-				}
-			}
-		}
-		MoveToLeft();
-		ClearOtherBoards();
-		if (numberOfSolutions==1) return true;
-		return false;
+	public boolean Solve(boolean keepSolving) { // still working on this to make sure it will exhaustively look up solutions...
+		return SolverIteration();
+		
+//		ClearOtherBoards();
+//		//setup variables in while
+//		boolean keepgoing = true;
+//		int numberOfSolutions = 0;
+//		
+//		while ((keepSolving) || (keepgoing))
+//		{
+//			boolean helpSolved = false;
+//			if (GetBoard().badBoard())
+//			{
+//				//try to delete.... if it does not work.... aka last board... exit
+//				if ((Count() == 1) || (!RightEnabled()))
+//				{
+//					if (numberOfSolutions == 0) Reset();
+//					//exit out...
+//					keepgoing = false;
+//					keepSolving = false;
+//				}
+//				Delete();
+//			}
+//			else
+//			{
+//				GetBoard().calculateHints(); 
+//				helpSolved = GetBoard().convertHintToSolution(); 
+//				
+//				if (GetBoard().solutionBoard())  // exit out....
+//				{
+//					keepgoing = false;
+//					numberOfSolutions++;
+//					if (numberOfSolutions>1) keepSolving = false;
+//					if ((keepSolving) && (RightEnabled()))
+//					{
+//						Right();
+//					}
+//					else
+//					{
+//						keepSolving = false;
+//					}
+//				}
+//				else if(!helpSolved)
+//				{
+//					twoHints location = GetBoard().leastHints();
+//					Guess(location.first, location.second);
+//				}
+//			}
+//		}
+//		MoveToLeft();
+//		ClearOtherBoards();
+//		if (numberOfSolutions==1) return true;
+//		return false;
 	}
 
 	private void MoveToLeft() {
