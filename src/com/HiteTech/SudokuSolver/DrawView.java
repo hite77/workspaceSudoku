@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import com.example.myfirstapp.R;
+import com.HiteTech.SudokuSolver.R;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -31,7 +31,7 @@ public class DrawView extends View implements OnTouchListener {
 	private Button Btn9 = null;
 	
 	
-	
+	private boolean Given = true;
 	private boolean EditMode = true;
 	private board Board;
 	private boolean initialized = false;
@@ -106,7 +106,10 @@ public class DrawView extends View implements OnTouchListener {
 		{
 			if (btn != null)
 			{
-				btn.setBackgroundColor(Color.CYAN);
+				if (Given)
+					btn.setBackgroundColor(Color.GREEN);
+				else
+					btn.setBackgroundColor(Color.CYAN);
 			}
 		}
 		else
@@ -174,7 +177,11 @@ public class DrawView extends View implements OnTouchListener {
 					fillWithColor(canvas, cell_width, cell_height, start_x,
 							start_y, Color.YELLOW);
 				}
-				
+				if (Board.isGiven(i, j))
+				{
+					fillWithColor(canvas, cell_width, cell_height, start_x,
+							start_y, Color.GREEN);
+				}
 				if (Board.getBad(i, j))
 				{
 					fillWithColor(canvas, cell_width, cell_height, start_x,

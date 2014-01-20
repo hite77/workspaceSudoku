@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
-import com.example.myfirstapp.R;
+import com.HiteTech.SudokuSolver.R;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -18,8 +18,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-
 public class MainActivity extends Activity {
+
+	private boolean Given = true;
 
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -36,6 +37,13 @@ public class MainActivity extends Activity {
             case R.id.resetAll:
             	Controller.Reset();
             	Sudoku.SetBoard(Controller.GetBoard());
+            	Sudoku.invalidate();
+            	return true;
+            case R.id.GivenToggle:
+            	Given = !Given;
+            	return true;
+            case R.id.ClearCell:
+            	Controller.GetBoard().resetCell(Sudoku.selection_x, Sudoku.selection_y);
             	Sudoku.invalidate();
             	return true;
             default:
@@ -89,7 +97,15 @@ public class MainActivity extends Activity {
             	}
             
             	// logic....	
-            	if (line.substring(0, 1).compareTo("S") == 0)
+            	if (line.substring(0, 1).compareTo("G") == 0)
+            	{
+            		Board.setGiven(Integer.parseInt(line.substring(1, 2)), i, j);
+            	}
+            	else if (line.substring(0, 1).compareTo("U") == 0)
+            	{
+            		Board.setGuess(Integer.parseInt(line.substring(1, 2)), i, j);
+            	}
+            	else if (line.substring(0, 1).compareTo("S") == 0)
             	{
             		Board.set(Integer.parseInt(line.substring(1, 2)), i, j);	
             	}
@@ -177,7 +193,15 @@ public class MainActivity extends Activity {
        	 for (int j=0; j<9; j++)
        	 {
        		 int cellSolution = currentBoard.get(i,j);
-       		 if (cellSolution > 0)
+       		 if (currentBoard.isGiven(i, j))
+       		 {
+       			output = "G" + Integer.toString(cellSolution);
+       		 }
+       		 else if (currentBoard.isGuess(i, j))
+       		 {
+       			output = "U" + Integer.toString(cellSolution);
+       		 }
+       		 else if (cellSolution > 0)
        		 {
        			 output = "S" + Integer.toString(cellSolution);
        		 }
@@ -227,7 +251,10 @@ public class MainActivity extends Activity {
     	if (Sudoku.selection_x == -1) return;
     	if (editMode)
     	{
-    		Controller.GetBoard().set(i, Sudoku.selection_x, Sudoku.selection_y);
+    		if (Given)
+    			Controller.GetBoard().setGiven(i, Sudoku.selection_x, Sudoku.selection_y);
+    		else
+    			Controller.GetBoard().set(i, Sudoku.selection_x, Sudoku.selection_y);
     	}
     	else
     	{

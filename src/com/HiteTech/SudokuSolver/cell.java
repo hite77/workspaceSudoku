@@ -8,6 +8,7 @@ public class cell {
 	Vector<Integer> possible = new Vector<Integer>();
 	private boolean bad = false;
 	private boolean guess = false;
+	private boolean given = false;
 	
 	public cell()
 	{
@@ -73,5 +74,13 @@ public class cell {
 	
 	public void setGuess() {
 		guess = true;
+	}
+
+	public boolean isGiven() {
+		return given;
+	}
+	
+	public void setGiven(boolean set) {
+		given = set;
 	}
 }

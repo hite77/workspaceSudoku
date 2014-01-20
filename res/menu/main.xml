@@ -3,5 +3,7 @@
     <item android:id="@+id/Delete" android:enabled="true" android:visible="true" android:title="Delete" android:titleCondensed="Delete"></item>
     <item android:id="@+id/undo" android:title="Undo" android:titleCondensed="Undo" android:enabled="false" android:visible="false"></item>
     <item android:id="@+id/resetAll" android:visible="true" android:enabled="true" android:title="Reset" android:titleCondensed="Reset"></item>
+    <item android:id="@+id/GivenToggle" android:visible="true" android:title="GivenToggle" android:enabled="true" android:titleCondensed="Given"></item>
+    <item android:id="@+id/ClearCell" android:visible="true" android:title="Clear Cell" android:enabled="true" android:titleCondensed="Clear Cell"></item>
 
 </menu>

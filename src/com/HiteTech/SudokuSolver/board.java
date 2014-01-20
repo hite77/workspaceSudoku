@@ -37,6 +37,7 @@ public class board {
 			for (int j=0;j<9;j++)
 			{
 				memory[i][j] = new cell();
+				if (getBoard.isGiven(i, j)) memory[i][j].setGiven(true);
 				if (getBoard.isGuess(i, j)) memory[i][j].setGuess();
 				
 				if (getBoard.get(i, j) > 0)
@@ -84,10 +85,17 @@ public class board {
 	}
 
 	public void set(int number, int x, int y) {
-		memory[x][y].set(number);
+		if (!memory[x][y].isGiven())
+			memory[x][y].set(number);
 		badBoard();   // remove this from here.  Is calling badBoard every time a cell is set, even in solver.
 	}
 
+	public void setGiven(int integer, int i, int j) {
+		memory[i][j].setGiven(false);
+		set(integer, i, j);
+		memory[i][j].setGiven(true);
+	}
+	
 	public void setGuess(Integer integer, int i, int j) {
 		set(integer, i, j);
 		memory[i][j].setGuess();
@@ -310,6 +318,10 @@ public class board {
 		return memory[i][j].isGuess();
 	}
 
+	public boolean isGiven(int i, int j) {
+		return memory[i][j].isGiven();
+	}
+	
 	public boolean solutionBoard() {
 		for (int i=0; i<9; i++)
 			for (int j=0; j<9; j++)
@@ -349,5 +361,14 @@ public class board {
 			}
 		
 		return location;
+	}
+
+	public void resetCell(int i, int j) {
+		memory[i][j].setGiven(false);
+		memory[i][j].set(0);
+		Vector<Integer> all = new Vector<Integer>();
+		all.add(1); all.add(2); all.add(3); all.add(4); all.add(5); all.add(6);
+		all.add(7); all.add(8); all.add(9);
+		memory[i][j].setPossible(all);
 	}		
 }
