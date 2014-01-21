@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -41,6 +42,11 @@ public class MainActivity extends Activity {
             	return true;
             case R.id.GivenToggle:
             	Given = !Given;
+            	EditText editBox = (EditText) findViewById(R.id.editText1);
+            	if (Given)
+            		editBox.setVisibility(View.VISIBLE);
+            	else
+            		editBox.setVisibility(View.GONE);
             	return true;
             case R.id.ClearCell:
             	Controller.GetBoard().resetCell(Sudoku.selection_x, Sudoku.selection_y);

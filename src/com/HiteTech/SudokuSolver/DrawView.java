@@ -31,7 +31,6 @@ public class DrawView extends View implements OnTouchListener {
 	private Button Btn9 = null;
 	
 	
-	private boolean Given = true;
 	private boolean EditMode = true;
 	private board Board;
 	private boolean initialized = false;
@@ -106,10 +105,7 @@ public class DrawView extends View implements OnTouchListener {
 		{
 			if (btn != null)
 			{
-				if (Given)
-					btn.setBackgroundColor(Color.GREEN);
-				else
-					btn.setBackgroundColor(Color.CYAN);
+				btn.setBackgroundColor(Color.CYAN);
 			}
 		}
 		else
@@ -233,6 +229,11 @@ public class DrawView extends View implements OnTouchListener {
 				
 				// will need to iterate over the vector, or check for each number.....
 				Vector <Integer> possible = Board.getPossible(i, j);
+				float original = paint.getTextSize();
+				
+				//paint.setTextSize((float) (original*0.8));
+				
+				
 				
 				if (possible.contains(1))
 				{
@@ -294,7 +295,8 @@ public class DrawView extends View implements OnTouchListener {
 	                         start_y+cell_height-(float)2.0, paint);
 					
 				}				
-	
+				paint.setTextSize(original);
+				
 				// need to separate draws to another class.
 				// and store coordinates
 				// so we can tell when each is clicked on....
