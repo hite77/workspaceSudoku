@@ -120,6 +120,20 @@ public class MainActivity extends Activity {
             		for (int loop=1; loop< line.length(); loop++)
             			Board.toggle(Integer.parseInt(line.substring(loop, loop+1)), i, j);
             	}
+            	else if (line.substring(0, 1).compareTo("M") == 0)
+            	{
+            		EditText editBox = (EditText) findViewById(R.id.editText1);
+            		if (Integer.parseInt(line.substring(1, 2)) == 1)
+            		{
+            			Given = true;
+            			editBox.setVisibility(View.VISIBLE);
+            		}
+            		else
+            		{
+            			Given = false;
+            			editBox.setVisibility(View.GONE);
+            		}
+            	}
             	// increment....
             	j++;
             
@@ -172,7 +186,13 @@ public class MainActivity extends Activity {
 	    		 currentBoard = Controller.GetBoard();
 	    		 OutputBoard(currentBoard, outputStream);
 	    	 }	 
-			outputStream.close();
+			 String output = "";
+	    	 if (Given) output = "M1";
+	    	 else output = "M0";
+	    	 
+	    	 outputStream.write(output.getBytes());
+			 outputStream.write(System.getProperty("line.separator").getBytes()); 
+	       	 outputStream.close();
 		} 
 		catch (IOException e) 
 		{
