@@ -364,7 +364,7 @@ public class MainActivity extends Activity {
     }	    
     
     public void solveClicked(View view) {
-    	Controller.Solve(false);
+    	Controller.solveOne();
     	Sudoku.SetBoard(Controller.GetBoard());
     	Sudoku.invalidate();
     }

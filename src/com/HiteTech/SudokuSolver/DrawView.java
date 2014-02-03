@@ -18,7 +18,8 @@ import android.widget.Button;
 
 public class DrawView extends View implements OnTouchListener {
 	
-	public int selection_x = 0; int selection_y = 0;
+	public int selection_x = 0; 
+	public int selection_y = 0;
 	
 	private Button Btn1 = null;
 	private Button Btn2 = null;
@@ -33,6 +34,13 @@ public class DrawView extends View implements OnTouchListener {
 	
 	private boolean EditMode = true;
 	private board Board;
+	/**
+	 * @return the board
+	 */
+	public board getBoard() {
+		return Board;
+	}
+
 	private boolean initialized = false;
 	private View ParentContext;
 	

@@ -3,10 +3,6 @@ package com.HiteTech.SudokuSolver;
 import java.util.Random;
 import java.util.Vector;
 
-import android.app.Application;
-import android.widget.Button;
-import android.widget.Toast;
-
 import com.HiteTech.SudokuSolver.board.twoHints;
 
 public class controller {
@@ -108,15 +104,68 @@ public class controller {
 
 	public boolean SolverIteration()
 	{
-		if (GetBoard().badBoard())
-			return false;
+		board Board = GetBoard();
+		if (Board.solutionBoard())
+		{
+			return true;
+		}
+		
+		if (Board.badBoard())
+		{
+			if (Count() == 1)
+			{
+				return false;
+			}
+			Delete();
+			return true;
+		}
+		
+		Board.calculateHints();
+		if (!Board.convertHintToSolution())
+		{
+			twoHints locationhints = Board.leastHints();
+			Guess(locationhints.first, locationhints.second);
+		}
 		return true;
 	}
+	
+	public boolean solveMulti() {
+		// needs to call solveOne.....
+		// and then continue solving....
+		ClearOtherBoards();
+		boolean badLastBoard = solverLoop();
+		if (badLastBoard) return false;
 		
-	public boolean Solve(boolean keepSolving) { // still working on this to make sure it will exhaustively look up solutions...
-		return SolverIteration();
+		boolean noMoreBoards = !RightEnabled();
+		if (noMoreBoards) return true;
 		
-//		ClearOtherBoards();
+		Right();
+		
+		boolean noOtherSolutions = solverLoop();
+		if (noOtherSolutions) return true;
+		
+		return false;
+	}
+	
+	private boolean solverLoop()
+	{
+		boolean badLastBoard = false;
+		while((!GetBoard().solutionBoard()) && (!badLastBoard))
+		{
+			badLastBoard = !SolverIteration();
+		}
+		return badLastBoard;
+	}
+	
+	public boolean solveOne() 
+	{
+		ClearOtherBoards();
+		
+		boolean badLastBoard = solverLoop();
+		
+		ClearOtherBoards();
+		return !badLastBoard;
+		
 //		//setup variables in while
 //		boolean keepgoing = true;
 //		int numberOfSolutions = 0;
@@ -124,7 +173,7 @@ public class controller {
 //		while ((keepSolving) || (keepgoing))
 //		{
 //			boolean helpSolved = false;
-//			if (GetBoard().badBoard())
+//			////////////////if (GetBoard().badBoard())/// in there
 //			{
 //				//try to delete.... if it does not work.... aka last board... exit
 //				if ((Count() == 1) || (!RightEnabled()))
@@ -134,12 +183,12 @@ public class controller {
 //					keepgoing = false;
 //					keepSolving = false;
 //				}
-//				Delete();
+//				////////////////////Delete();
 //			}
 //			else
 //			{
-//				GetBoard().calculateHints(); 
-//				helpSolved = GetBoard().convertHintToSolution(); 
+//				//////////////////////GetBoard().calculateHints(); 
+//				/////////////////////helpSolved = GetBoard().convertHintToSolution(); 
 //				
 //				if (GetBoard().solutionBoard())  // exit out....
 //				{
@@ -248,7 +297,7 @@ public class controller {
 				
 				Boards.add(Position+1, copyBoard);
 				Right();
-				if (Solve(false))
+				if (solveOne())
 				{
 					// keep the number
 					filledBoard.set(pick, coords.get(randomInt).x, coords.get(randomInt).y);
@@ -298,7 +347,7 @@ public class controller {
 			Boards.add(clone);
 			Position += 1;
 			ClearOtherBoards();
-			if (Solve(true))
+			if (solveMulti())
 			{
 				// make the hide permanent by toggling all pencil hints on
 				filledBoard.toggle(1, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
