@@ -57,6 +57,10 @@ public class controller {
 		if (Position >= Boards.size()) Position = Boards.size()-1;
 	}
 
+	public void SetPosition(int p) {
+		Position = p-1;
+	}
+	
 	public int Position() {
 		return Position+1;
 	}

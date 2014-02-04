@@ -12,6 +12,7 @@ import com.HiteTech.SudokuSolver.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,7 +68,16 @@ public class MainActivity extends Activity {
     
     private boolean editMode = true;
 	private DrawView Sudoku;
-	
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
+	 */
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putInt("position", Controller.Position());
+		super.onSaveInstanceState(outState);
+	}
+
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,7 +154,6 @@ public class MainActivity extends Activity {
             	}    
             }
             MessageBox("Done loading Sudoku");
-            Sudoku.invalidate();
             
             r.close();
             inputStream.close();
@@ -153,11 +162,12 @@ public class MainActivity extends Activity {
            // problem with file....  do nothing... should have empty board.
         }
     	
-    	while (Controller.LeftEnabled())
-   	 	{
-    		Controller.Left();
-   	 	} 
-        Sudoku.SetBoard(Controller.GetBoard());
+    	if (savedInstanceState != null)
+    	{
+    		Controller.SetPosition(savedInstanceState.getInt("position", 1));
+    	}
+    	Sudoku.SetBoard(Controller.GetBoard());
+    	Sudoku.invalidate();
     }
 	
 	private void persist()
@@ -170,12 +180,10 @@ public class MainActivity extends Activity {
 	     {
 	    	 outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
 		 
+	    	 int position = Controller.Position();
 	    	 // go to first board....
-	    	 while (Controller.LeftEnabled())
-	    	 {
-	    		 Controller.Left();
-	    	 } 
-	         
+	    	 Controller.SetPosition(1);
+	    	  
 	    	 board currentBoard = Controller.GetBoard();
 	    	 OutputBoard(currentBoard, outputStream);
 	         
@@ -193,6 +201,7 @@ public class MainActivity extends Activity {
 	    	 outputStream.write(output.getBytes());
 			 outputStream.write(System.getProperty("line.separator").getBytes()); 
 	       	 outputStream.close();
+	       	 Controller.SetPosition(position);
 		} 
 		catch (IOException e) 
 		{
@@ -287,6 +296,11 @@ public class MainActivity extends Activity {
     		Controller.GetBoard().toggle(i, Sudoku.selection_x, Sudoku.selection_y);
     	}
     	Sudoku.invalidate();
+    	if (Controller.GetBoard().solutionBoard())
+    	{
+    		Intent intent = new Intent(MainActivity.this, SolvedActivity.class);
+    		startActivity(intent);
+    	}
   }
     
     public void oneClicked(View view) {
