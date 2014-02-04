@@ -75,6 +75,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putInt("position", Controller.Position());
+		outState.putBoolean("Given", Given);
 		super.onSaveInstanceState(outState);
 	}
 
@@ -130,20 +131,6 @@ public class MainActivity extends Activity {
             		for (int loop=1; loop< line.length(); loop++)
             			Board.toggle(Integer.parseInt(line.substring(loop, loop+1)), i, j);
             	}
-            	else if (line.substring(0, 1).compareTo("M") == 0)
-            	{
-            		EditText editBox = (EditText) findViewById(R.id.editText1);
-            		if (Integer.parseInt(line.substring(1, 2)) == 1)
-            		{
-            			Given = true;
-            			editBox.setVisibility(View.VISIBLE);
-            		}
-            		else
-            		{
-            			Given = false;
-            			editBox.setVisibility(View.GONE);
-            		}
-            	}
             	// increment....
             	j++;
             
@@ -165,6 +152,19 @@ public class MainActivity extends Activity {
     	if (savedInstanceState != null)
     	{
     		Controller.SetPosition(savedInstanceState.getInt("position", 1));
+    		
+    		EditText editBox = (EditText) findViewById(R.id.editText1);
+    		boolean given = savedInstanceState.getBoolean("Given", true);
+    		if (given)
+    		{
+    			Given = true;
+    			editBox.setVisibility(View.VISIBLE);
+    		}
+    		else
+    		{
+    			Given = false;
+    			editBox.setVisibility(View.GONE);
+    		}
     	}
     	Sudoku.SetBoard(Controller.GetBoard());
     	Sudoku.invalidate();
@@ -194,13 +194,7 @@ public class MainActivity extends Activity {
 	    		 currentBoard = Controller.GetBoard();
 	    		 OutputBoard(currentBoard, outputStream);
 	    	 }	 
-			 String output = "";
-	    	 if (Given) output = "M1";
-	    	 else output = "M0";
-	    	 
-	    	 outputStream.write(output.getBytes());
-			 outputStream.write(System.getProperty("line.separator").getBytes()); 
-	       	 outputStream.close();
+	    	 outputStream.close();
 	       	 Controller.SetPosition(position);
 		} 
 		catch (IOException e) 
