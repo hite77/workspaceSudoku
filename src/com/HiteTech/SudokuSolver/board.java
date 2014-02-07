@@ -2,9 +2,35 @@ package com.HiteTech.SudokuSolver;
 
 import java.util.Vector;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class board {
 
+public class board{
+	     
+	 public int[] writeBoard() 
+	 {
+		 int counter = 0;
+		 int[] out = new int[81];
+		 for (int i=0; i<9; i++)
+	    		 for (int j=0; j<9; j++)
+	    		 {
+	    			 out[counter] = memory[i][j].getSolution();
+	    			 counter += 1;
+	    		 }
+		 return out;
+	 }
+	     
+	public void readBoard(int[] in) {
+		int counter = 0;
+		for (int i=0; i<9; i++)
+			for (int j=0; j<9; j++)
+			{
+				memory[i][j].set(in[counter]);
+				counter += 1;
+			}
+	     }
+	
 	private cell[][] memory = new cell[9][9];
 	private cell[][] hcells = new cell[9][9];
 	private cell[][] vcells = new cell[9][9];

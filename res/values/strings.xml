@@ -3,7 +3,6 @@
 
     <string name="app_name">Sudoku</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Des Moines John Deere</string>
     <string name="title_activity_solved">SolvedActivity</string>
 
 </resources>

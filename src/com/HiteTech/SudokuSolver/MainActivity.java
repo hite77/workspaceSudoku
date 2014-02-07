@@ -293,9 +293,24 @@ public class MainActivity extends Activity {
     	if (Controller.GetBoard().solutionBoard())
     	{
     		Intent intent = new Intent(MainActivity.this, SolvedActivity.class);
-    		startActivity(intent);
+    		intent.putExtra("Board", Controller.GetBoard().writeBoard());
+//    		startActivity(intent);
+    		
+    		int requestCode = 0;
+			startActivityForResult(intent, requestCode);
     	}
   }
+    
+    protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                Controller.Reset();
+                Sudoku.SetBoard(Controller.GetBoard());
+            }
+        }
+    }
+    
     
     public void oneClicked(View view) {
     	HandleClick(1);
@@ -378,7 +393,7 @@ public class MainActivity extends Activity {
     }
     
     public void generateClicked(View view) {
-    	Controller.Generate();
+//    	Controller.Generate();
     	Sudoku.SetBoard(Controller.GetBoard());
     	Sudoku.invalidate();
     }

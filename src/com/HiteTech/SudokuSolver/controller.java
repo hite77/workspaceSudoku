@@ -134,8 +134,6 @@ public class controller {
 	}
 	
 	public boolean solveMulti() {
-		// needs to call solveOne.....
-		// and then continue solving....
 		ClearOtherBoards();
 		boolean badLastBoard = solverLoop();
 		if (badLastBoard) return false;
@@ -248,127 +246,156 @@ public class controller {
 		public int y;
 	}
 	
-	public void Generate() {
-		Reset();
-		//first part -- build a board.....
-		board filledBoard = new board();
-		Vector<element> coords = new Vector<element>();
-		
-		for (int i=0; i<9; i++)
-			for (int j=0; j<9;j++)
-			{
-				element newElement = new element();
-				newElement.x = i;
-				newElement.y = j;
-				coords.add(newElement);
-			}
-		
+//	public void Generate() {
+//		Reset();
+//		//first part -- build a board.....
+//		board filledBoard = new board();
+//		Vector<element> coords = new Vector<element>();
+//		
+//		for (int i=0; i<9; i++)
+//			for (int j=0; j<9;j++)
+//			{
+//				element newElement = new element();
+//				newElement.x = i;
+//				newElement.y = j;
+//				coords.add(newElement);
+//			}
+//		
+//		Random randomGenerator = new Random();
+//		
+//		while (coords.size() > 0)
+//		{
+//			// randomly pick from list.... 0 to size -1.... 
+//			int randomInt;
+//			if (coords.size() == 1)
+//				randomInt = 0;
+//			else
+//				randomInt = randomGenerator.nextInt(coords.size());
+//			//copy hints from selected cell
+//			Vector<Integer> possible = filledBoard.getPossible(coords.get(randomInt).x, coords.get(randomInt).y);
+//			if (possible.size() == 0)
+//			{
+//				// this was set already.....
+//				coords.remove(randomInt);
+//			}
+//			else if (possible.size() == 1)
+//			{
+//				// only one possible.  Convert it to solution.
+//				filledBoard.convertHintToSolution();
+//				filledBoard.calculateHints();
+//			
+//				coords.remove(randomInt);
+//			}
+//			else
+//			{
+//				// pick from one of the possible and try solving....
+//				// if it solves ok with one solution, then keep it, otherwise don't
+//				int pick = randomGenerator.nextInt(possible.size());
+//				pick = possible.elementAt(pick);
+//				board copyBoard = new board(filledBoard);
+//				copyBoard.set(pick, coords.get(randomInt).x, coords.get(randomInt).y);
+//				filledBoard.toggle(pick, coords.get(randomInt).x, coords.get(randomInt).y);
+//				// if it solves on copyBoard then apply.  Otherwise.... don't.
+//				
+//				Boards.add(Position+1, copyBoard);
+//				Right();
+//				if (solveOne())
+//				{
+//					// keep the number
+//					filledBoard.set(pick, coords.get(randomInt).x, coords.get(randomInt).y);
+//					// filter out other possibilities
+//					filledBoard.calculateHints();
+//				}
+//			}
+//		}
+//		
+//		// have the board now... now to randomly try to hide all 81....
+//		for (int i=0; i<9; i++)
+//			for (int j=0; j<9;j++)
+//			{
+//				element newElement = new element();
+//				newElement.x = i;
+//				newElement.y = j;
+//				coords.add(newElement);
+//			}
+//		// shuffle these boards into new vector....
+//		Vector<element> tryHide = new Vector<element>();
+//		for (int i=0; i<9; i++)
+//			for (int j=0; j<9;j++)
+//			{
+//				int r = randomGenerator.nextInt(coords.size());
+//				element NewElement = new element();
+//				NewElement.x = coords.elementAt(r).x;
+//				NewElement.y = coords.elementAt(r).y;
+//				tryHide.add(NewElement);
+//				coords.remove(r);				
+//			}
+//		// ok now we have random order in tryHide...
+//		for (int i=0; i<81; i++)
+//		{
+//			// create a clone of the board....
+//			board clone = new board(filledBoard);
+//			// remove the hide element.....
+//			clone.toggle(1, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//			clone.toggle(2, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//			clone.toggle(3, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//			clone.toggle(4, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//			clone.toggle(5, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//			clone.toggle(6, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//			clone.toggle(7, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//			clone.toggle(8, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//			clone.toggle(9, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//			Reset();
+//			Boards.add(clone);
+//			Position += 1;
+//			ClearOtherBoards();
+//			if (solveMulti())
+//			{
+//				// make the hide permanent by toggling all pencil hints on
+//				filledBoard.toggle(1, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//				filledBoard.toggle(2, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//				filledBoard.toggle(3, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//				filledBoard.toggle(4, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//				filledBoard.toggle(5, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//				filledBoard.toggle(6, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//				filledBoard.toggle(7, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//				filledBoard.toggle(8, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//				filledBoard.toggle(9, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
+//			}
+//		}
+//		
+//		// finally show the board with cells hidden
+//		Boards.add(filledBoard);
+//		Position += 1;
+//		ClearOtherBoards();
+//	}
+
+	public board stage1()
+	{
+		return null;
+	}
+	
+	public boolean stage1step(int x, int y, board board)
+	{
+		// randomly pick from the list of cells
+		Vector<Integer> possible = board.getPossible(x, y);
 		Random randomGenerator = new Random();
+		int randomInt = 0;
+		if (possible.size() > 1)
+			randomInt = randomGenerator.nextInt(possible.size());
+		board.toggle(possible.get(randomInt), x, y);
+		applyHintRandomized(x, y, randomInt, board);
+		return true;
+	}
+	
+	public boolean applyHintRandomized(int x, int y, int valuePicked, board board) {
+		Reset();
+		board solveBoard = new board(board);
+		Boards.add(0, solveBoard);
+		if (!solveOne()) return false;
 		
-		while (coords.size() > 0)
-		{
-			// randomly pick from list.... 0 to size -1.... 
-			int randomInt;
-			if (coords.size() == 1)
-				randomInt = 0;
-			else
-				randomInt = randomGenerator.nextInt(coords.size());
-			//copy hints from selected cell
-			Vector<Integer> possible = filledBoard.getPossible(coords.get(randomInt).x, coords.get(randomInt).y);
-			if (possible.size() == 0)
-			{
-				// this was set already.....
-				coords.remove(randomInt);
-			}
-			else if (possible.size() == 1)
-			{
-				// only one possible.  Convert it to solution.
-				filledBoard.convertHintToSolution();
-				filledBoard.calculateHints();
-			
-				coords.remove(randomInt);
-			}
-			else
-			{
-				// pick from one of the possible and try solving....
-				// if it solves ok with one solution, then keep it, otherwise don't
-				int pick = randomGenerator.nextInt(possible.size());
-				pick = possible.elementAt(pick);
-				board copyBoard = new board(filledBoard);
-				copyBoard.set(pick, coords.get(randomInt).x, coords.get(randomInt).y);
-				filledBoard.toggle(pick, coords.get(randomInt).x, coords.get(randomInt).y);
-				// if it solves on copyBoard then apply.  Otherwise.... don't.
-				
-				Boards.add(Position+1, copyBoard);
-				Right();
-				if (solveOne())
-				{
-					// keep the number
-					filledBoard.set(pick, coords.get(randomInt).x, coords.get(randomInt).y);
-					// filter out other possibilities
-					filledBoard.calculateHints();
-				}
-			}
-		}
-		
-		// have the board now... now to randomly try to hide all 81....
-		for (int i=0; i<9; i++)
-			for (int j=0; j<9;j++)
-			{
-				element newElement = new element();
-				newElement.x = i;
-				newElement.y = j;
-				coords.add(newElement);
-			}
-		// shuffle these boards into new vector....
-		Vector<element> tryHide = new Vector<element>();
-		for (int i=0; i<9; i++)
-			for (int j=0; j<9;j++)
-			{
-				int r = randomGenerator.nextInt(coords.size());
-				element NewElement = new element();
-				NewElement.x = coords.elementAt(r).x;
-				NewElement.y = coords.elementAt(r).y;
-				tryHide.add(NewElement);
-				coords.remove(r);				
-			}
-		// ok now we have random order in tryHide...
-		for (int i=0; i<81; i++)
-		{
-			// create a clone of the board....
-			board clone = new board(filledBoard);
-			// remove the hide element.....
-			clone.toggle(1, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-			clone.toggle(2, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-			clone.toggle(3, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-			clone.toggle(4, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-			clone.toggle(5, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-			clone.toggle(6, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-			clone.toggle(7, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-			clone.toggle(8, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-			clone.toggle(9, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-			Reset();
-			Boards.add(clone);
-			Position += 1;
-			ClearOtherBoards();
-			if (solveMulti())
-			{
-				// make the hide permanent by toggling all pencil hints on
-				filledBoard.toggle(1, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-				filledBoard.toggle(2, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-				filledBoard.toggle(3, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-				filledBoard.toggle(4, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-				filledBoard.toggle(5, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-				filledBoard.toggle(6, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-				filledBoard.toggle(7, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-				filledBoard.toggle(8, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-				filledBoard.toggle(9, tryHide.elementAt(i).x, tryHide.elementAt(i).y);
-			}
-		}
-		
-		// finally show the board with cells hidden
-		Boards.add(filledBoard);
-		Position += 1;
-		ClearOtherBoards();
+		Vector<Integer> possible = board.getPossible(x, y);
+		board.set(possible.get(valuePicked-1), x, y);
+		return true;
 	}	
 }
