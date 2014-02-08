@@ -18,13 +18,6 @@ public class SolvedActivity extends Activity {
 		Board.readBoard(array);
 		setBoard(Board);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.solved, menu);
-		return true;
-	}
 	
 	public void setBoard(board solvedBoard)
 	{
