@@ -375,15 +375,14 @@ public class controller {
 		return null;
 	}
 	
-	public boolean stage1step(int x, int y, board board)
+	public boolean stage1step(int x, int y, board board, Random randomGenerator)
 	{
+		board.calculateHints();
 		// randomly pick from the list of cells
 		Vector<Integer> possible = board.getPossible(x, y);
-		Random randomGenerator = new Random();
 		int randomInt = 0;
 		if (possible.size() > 1)
 			randomInt = randomGenerator.nextInt(possible.size());
-		board.toggle(possible.get(randomInt), x, y);
 		applyHintRandomized(x, y, randomInt, board);
 		return true;
 	}
@@ -395,7 +394,7 @@ public class controller {
 		if (!solveOne()) return false;
 		
 		Vector<Integer> possible = board.getPossible(x, y);
-		board.set(possible.get(valuePicked-1), x, y);
+		board.set(possible.get(valuePicked), x, y);
 		return true;
 	}	
 }
